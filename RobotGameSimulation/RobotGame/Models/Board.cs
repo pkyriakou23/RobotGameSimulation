@@ -1,0 +1,88 @@
+﻿using System;
+using System.Collections.Generic;
+using RobotGameSimulation.RobotGame.Enums;
+
+namespace RobotGameSimulation.RobotGame.Models
+{
+    public class Board
+    {
+        private const int BoardSize = 5;
+        public Robot? Robot { get; private set; }
+        private readonly HashSet<Position> _walls;
+        public Board()
+        {
+            Robot = null;
+            _walls = new HashSet<Position>();
+        }
+        public void PlaceRobot(Position position, FacingDirection facing)
+        {
+            if (!IsPositionValid(position)) return;
+
+            if (Robot == null)
+            {
+                Robot = new Robot(position, facing);
+            }
+            else
+            {
+                Robot.Place(position, facing);
+            }
+        }
+        public void PlaceWall(Position position)
+        {
+            if (!IsPositionValid(position)) return;
+
+            if (IsOccupied(position)) return;
+
+            _walls.Add(position);
+        }
+        public void MoveRobot()
+        {
+            if (Robot == null || !Robot.IsPlaced) return;
+
+            var currentPosition = Robot.Position!;
+            var newPosition = CalculateNewPosition(currentPosition, Robot.FacingDirection);
+
+            // If there's a wall at the new position, ignore the move
+            if (_walls.Contains(newPosition)) return;
+
+            // Use Place to update robot's position (keeps same facing)
+            Robot.PlaceRobot(newPosition, Robot.FacingDirection);
+        }
+
+        public void TurnRobotLeft()
+        {
+            if (Robot == null || !Robot.IsPlaced) return;
+            Robot.TurnLeft();
+        }
+
+        public void TurnRobotRight()
+        {
+            if (Robot == null || !Robot.IsPlaced) return;
+            Robot.TurnRight();
+        }
+        private Position CalculateNewPosition(Position current, FacingDirection facing)
+        {
+            return facing switch
+            {
+                FacingDirection.NORTH => new Position(current.Row + 1, current.Col),
+                FacingDirection.EAST => new Position(current.Row, current.Col + 1),
+                FacingDirection.SOUTH => new Position(current.Row - 1, current.Col),
+                FacingDirection.WEST => new Position(current.Row, current.Col - 1),
+                _ => current
+            };
+        }
+        private bool IsPositionValid(Position position)
+        {
+            return position.Row >= 1 && position.Row <= BoardSize
+                && position.Col >= 1 && position.Col <= BoardSize;
+        }
+        private bool IsOccupied(Position position)
+        {
+            if (Robot != null && Robot.IsPlaced && Robot.Position!.Equals(position))
+                return true;
+
+            // Check if occupied by wall
+            return _walls.Contains(position);
+        }
+    }
+}
