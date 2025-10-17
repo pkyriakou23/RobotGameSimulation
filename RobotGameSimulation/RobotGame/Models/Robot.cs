@@ -49,7 +49,7 @@ namespace RobotGameSimulation.RobotGame.Models
                 _ => FacingDirection
             };
         }
-        public string? Report() => IsPlaced ? $"{Position},{FacingDirection}" : null; //check if better to print directly
+        public string? Report() => IsPlaced ? $"{Position},{FacingDirection}" : null;
         public void MoveTo(Position newPosition)
         {
             if (!IsPlaced) return;

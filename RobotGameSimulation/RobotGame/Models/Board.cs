@@ -24,7 +24,7 @@ namespace RobotGameSimulation.RobotGame.Models
             }
             else
             {
-                Robot.Place(position, facing);
+                Robot.PlaceRobot(position, facing);
             }
         }
         public void PlaceWall(Position position)
@@ -83,6 +83,12 @@ namespace RobotGameSimulation.RobotGame.Models
 
             // Check if occupied by wall
             return _walls.Contains(position);
+        }
+
+        public string? Report()
+        {
+            if (Robot == null || !Robot.IsPlaced) return null;
+            return Robot.Report();
         }
     }
 }
