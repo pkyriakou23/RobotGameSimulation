@@ -64,10 +64,10 @@ namespace RobotGameSimulation.RobotGame.Models
         {
             return facing switch
             {
-                FacingDirection.NORTH => new Position(current.Row + 1, current.Col),
-                FacingDirection.EAST => new Position(current.Row, current.Col + 1),
-                FacingDirection.SOUTH => new Position(current.Row - 1, current.Col),
-                FacingDirection.WEST => new Position(current.Row, current.Col - 1),
+                FacingDirection.NORTH => new Position(current.Row == BoardSize ? 1 : current.Row + 1, current.Col),
+                FacingDirection.SOUTH => new Position(current.Row == 1 ? BoardSize : current.Row - 1, current.Col),
+                FacingDirection.EAST => new Position(current.Row, current.Col == BoardSize ? 1 : current.Col + 1),
+                FacingDirection.WEST => new Position(current.Row, current.Col == 1 ? BoardSize : current.Col - 1),
                 _ => current
             };
         }
