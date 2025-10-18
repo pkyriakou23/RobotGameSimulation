@@ -20,10 +20,10 @@ namespace RobotGameSimulation.RobotGame.Engine
             {
                 CommandType.PLACE_ROBOT => ParsePlaceRobotCommand(parts),
                 CommandType.PLACE_WALL => ParsePlaceWallCommand(parts),
-                CommandType.MOVE => new MoveCommand(),
-                CommandType.LEFT => new TurnLeftCommand(),
-                CommandType.RIGHT => new TurnRightCommand(),
-                CommandType.REPORT => new ReportCommand(),
+                CommandType.MOVE => parts.Length == 1 ? new MoveCommand() : null,
+                CommandType.LEFT => parts.Length == 1 ? new TurnLeftCommand() : null,
+                CommandType.RIGHT => parts.Length == 1 ? new TurnRightCommand() : null,
+                CommandType.REPORT => parts.Length == 1 ? new ReportCommand() : null,
                 _ => null
             };
         }
