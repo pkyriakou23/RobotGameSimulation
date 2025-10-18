@@ -12,17 +12,18 @@ namespace RobotGameSimulation.RobotGame.Engine
             if (string.IsNullOrWhiteSpace(input))
                 return null;
 
-            var parts = input.Trim().Split(' ');
-            var commandType = parts[0].ToUpper();
+            var parts = input.Trim().Split(' ', 2);
+            if (!Enum.TryParse<CommandType>(parts[0], true, out var commandType))
+                return null;
 
             return commandType switch
             {
-                "PLACE_ROBOT" => ParsePlaceRobotCommand(parts),
-                "PLACE_WALL" => ParsePlaceWallCommand(parts),
-                "MOVE" => new MoveCommand(),
-                "LEFT" => new TurnLeftCommand(),
-                "RIGHT" => new TurnRightCommand(),
-                "REPORT" => new ReportCommand(),
+                CommandType.PLACE_ROBOT => ParsePlaceRobotCommand(parts),
+                CommandType.PLACE_WALL => ParsePlaceWallCommand(parts),
+                CommandType.MOVE => new MoveCommand(),
+                CommandType.LEFT => new TurnLeftCommand(),
+                CommandType.RIGHT => new TurnRightCommand(),
+                CommandType.REPORT => new ReportCommand(),
                 _ => null
             };
         }
@@ -30,26 +31,24 @@ namespace RobotGameSimulation.RobotGame.Engine
         {
             if (parts.Length < 2) return null;
 
-            var arguments = parts[1].Split(',');
-            if (arguments.Length != 3) return null;
+            var arguments = SplitArguments(parts.Length > 1 ? parts[1] : null, 3);
+            if (arguments == null) return null;
 
             if (!int.TryParse(arguments[0], out int row) ||
                 !int.TryParse(arguments[1], out int col) ||
-                !Enum.TryParse<FacingDirection>(arguments[2].ToUpper(), out var facing))
+                !Enum.TryParse<FacingDirection>(arguments[2], true, out var facing))
             {
                 return null;
             }
 
             return new PlaceRobotCommand(row, col, facing);
         }
-
-
-            private ICommand? ParsePlaceWallCommand(string[] parts)
+        private ICommand? ParsePlaceWallCommand(string[] parts)
         {
             if (parts.Length < 2) return null;
 
-            var arguments = parts[1].Split(',');
-            if (arguments.Length != 2) return null;
+            var arguments = SplitArguments(parts.Length > 1 ? parts[1] : null, 2);
+            if (arguments == null) return null;
 
             if (!int.TryParse(arguments[0], out int row) ||
                 !int.TryParse(arguments[1], out int col))
@@ -58,6 +57,13 @@ namespace RobotGameSimulation.RobotGame.Engine
             }
 
             return new PlaceWallCommand(row, col);
+        }
+        private string[]? SplitArguments(string? argString, int expectedCount)
+        {
+            if (string.IsNullOrWhiteSpace(argString)) return null;
+
+            var args = argString.Split(',', StringSplitOptions.TrimEntries);
+            return args.Length == expectedCount ? args : null;
         }
     }
 }
