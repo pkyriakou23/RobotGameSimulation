@@ -17,7 +17,7 @@ namespace RobotGameSimulation.RobotGame.Models
         public void PlaceRobot(Position position, FacingDirection facing)
         {
             if (!IsPositionValid(position)) return;
-
+            //check if it is occupied by wall??
             if (Robot == null)
             {
                 Robot = new Robot(position, facing);
@@ -42,11 +42,9 @@ namespace RobotGameSimulation.RobotGame.Models
             var currentPosition = Robot.Position!;
             var newPosition = CalculateNewPosition(currentPosition, Robot.FacingDirection);
 
-            // If there's a wall at the new position, ignore the move
             if (_walls.Contains(newPosition)) return;
 
-            // Use Place to update robot's position (keeps same facing)
-            Robot.PlaceRobot(newPosition, Robot.FacingDirection);
+            Robot.MoveTo(newPosition);
         }
 
         public void TurnRobotLeft()
@@ -78,13 +76,11 @@ namespace RobotGameSimulation.RobotGame.Models
         }
         private bool IsOccupied(Position position)
         {
+            //check the direction for robot ?
             if (Robot != null && Robot.IsPlaced && Robot.Position!.Equals(position))
                 return true;
-
-            // Check if occupied by wall
             return _walls.Contains(position);
         }
-
         public string? Report()
         {
             if (Robot == null || !Robot.IsPlaced) return null;

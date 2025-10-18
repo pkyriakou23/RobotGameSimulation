@@ -7,7 +7,7 @@ using RobotGameSimulation.RobotGame.Models;
 
 namespace RobotGameSimulation.RobotGame.Commands
 {
-    internal interface ICommand
+    public interface ICommand
     {
         void Execute(Board board);
     }

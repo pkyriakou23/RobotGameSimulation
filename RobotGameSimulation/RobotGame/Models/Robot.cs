@@ -10,7 +10,6 @@ namespace RobotGameSimulation.RobotGame.Models
         public FacingDirection FacingDirection { get; private set; }
         public bool IsPlaced => Position != null;
 
-        public Robot(){}
         public Robot(Position position, FacingDirection facing)
         {
             Position = position;
@@ -18,8 +17,6 @@ namespace RobotGameSimulation.RobotGame.Models
         }
         public void PlaceRobot(Position position, FacingDirection facing)
         {
-            ArgumentNullException.ThrowIfNull(position);
-
             Position = position;
             FacingDirection = facing;
         }

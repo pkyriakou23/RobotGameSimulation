@@ -1,2 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using RobotGameSimulation.RobotGame.Engine;
+
+namespace RobotGameSimulation.RobotGame
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var gameEngine = new GameEngine();
+            gameEngine.Run();
+        }
+    }
+}

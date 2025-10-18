@@ -14,4 +14,5 @@ namespace RobotGameSimulation.RobotGame.Commands
                 Console.WriteLine(report);
             }
         }
+    }
 }

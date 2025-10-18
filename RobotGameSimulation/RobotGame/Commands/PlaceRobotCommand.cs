@@ -5,7 +5,7 @@ using RobotGameSimulation.RobotGame.Models;
 
 namespace RobotGameSimulation.RobotGame.Commands
 {
-    public class PlaceRobotCommand
+    public class PlaceRobotCommand : ICommand
     {
         public int Row { get; }
         public int Col { get; }
