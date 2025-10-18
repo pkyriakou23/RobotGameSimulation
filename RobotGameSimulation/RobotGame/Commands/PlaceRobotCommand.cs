@@ -11,17 +11,16 @@ namespace RobotGameSimulation.RobotGame.Commands
         public int Col { get; }
         public FacingDirection Facing { get; }
 
-            public PlaceRobotCommand(int row, int col, FacingDirection facing)
-            {
-                Row = row;
-                Col = col;
-                Facing = facing;
-            }
+        public PlaceRobotCommand(int row, int col, FacingDirection facing)
+        {
+            Row = row;
+            Col = col;
+            Facing = facing;
+        }
 
-            public void Execute(Board board)
-            {
-                board.PlaceRobot(new Position(Row, Col), Facing);
-            }
+        public void Execute(Board board)
+        {
+            board.PlaceRobot(new Position(Row, Col), Facing);
         }
     }
 }
