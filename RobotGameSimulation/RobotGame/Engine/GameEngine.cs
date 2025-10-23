@@ -28,23 +28,14 @@ namespace RobotGameSimulation.RobotGame.Engine
                 ExecuteCommand(input);
             }
         }
-        private void ExecuteCommand(string input)
+        public void ExecuteCommand(string input)
         {
-            try
-            {
-                var command = _commandParser.Parse(input);
+            var command = _commandParser.Parse(input);
 
-                if (command == null)
-                {
-                    return;
-                }
+            if (command == null)
+                return;
 
-                command.Execute(_board);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
+            command.Execute(_board);
         }
     }
 }
