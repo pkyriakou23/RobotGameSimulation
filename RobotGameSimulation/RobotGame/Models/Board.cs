@@ -29,6 +29,13 @@ namespace RobotGameSimulation.RobotGame.Models
                 Robot.PlaceRobot(position, facing);
             }
         }
+
+        /// <summary>
+        /// Places a wall at the specified position on the board if the position is valid,
+        /// not already occupied by a wall, and not occupied by the robot. If the board
+        /// becomes completely blocked by walls, the application exits.
+        /// </summary>
+        /// <param name="position">The position where the wall is to be placed.</param>
         public void PlaceWall(Position position)
         {
             if (!IsPositionValid(position)) return;
@@ -36,6 +43,11 @@ namespace RobotGameSimulation.RobotGame.Models
             if (IsWall(position) || IsRobotAt(position)) return;
 
             _walls.Add(position);
+            if (_walls.Count >= BoardSize * BoardSize)
+            {
+                Console.WriteLine("No other command can be executed: the board is completely blocked by walls");
+                Environment.Exit(1);
+            }
         }
         public void MoveRobot()
         {
@@ -60,6 +72,18 @@ namespace RobotGameSimulation.RobotGame.Models
             if (Robot == null || !Robot.IsPlaced) return;
             Robot.TurnRight();
         }
+
+        /// <summary>
+        /// Calculates the new position after moving in the given direction from the current position.
+        /// Implements board wrapping: when moving beyond an edge, the robot appears on the opposite side.
+        /// - NORTH: Increases row, wraps from top (5) to bottom (1)
+        /// - SOUTH: Decreases row, wraps from bottom (1) to top (5)  
+        /// - EAST: Increases column, wraps from right (5) to left (1)
+        /// - WEST: Decreases column, wraps from left (1) to right (5)
+        /// </summary>
+        /// <param name="current">The current position of the robot</param>
+        /// <param name="facing">The direction the robot is facing</param>
+        /// <returns>The new position after movement with edge wrapping applied</returns>
         private Position CalculateNewPosition(Position current, FacingDirection facing)
         {
             return facing switch
