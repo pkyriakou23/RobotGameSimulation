@@ -1,0 +1,29 @@
+# Ignore Visual Studio IDE folders
+.vs/
+.vscode/
+
+# Build outputs
+bin/
+obj/
+TestResults/
+logs/
+
+# User-specific and temporary files
+*.user
+*.suo
+*.cache
+*.log
+*.tmp
+
+# OS junk
+Thumbs.db
+.DS_Store
+
+# NuGet packages
+*.nupkg
+packages/
+.nuget/
+
+# Optional configs (don’t commit local settings)
+appsettings.Development.json
+secrets.json
